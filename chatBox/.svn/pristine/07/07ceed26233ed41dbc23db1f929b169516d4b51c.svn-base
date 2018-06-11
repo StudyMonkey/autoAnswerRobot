@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="chat.css"/>
+		<script type="text/javascript" src="jquery-1.11.2.min.js" ></script>
+		<script type="text/javascript" src="socket.io.js" ></script>
+		<script type="text/javascript" src="chat.js" ></script>
+		<script>
+			document.domain = 'http://172.26.69.108:80/mooc/';
+		</script>
+	</head>
+	<body>
+		<div class="chatBox">
+			<div class="chatBox_mini">
+				<div class="mini_btn_info">
+					<span class="img_span"></span>
+					<span class="bg_span"></span>
+				</div>
+				<div class="mini-btn-middle">您的学习小助手!</div>
+				<div class="mini-btn-window" style=""></div>
+			</div>
+			<div class="chatBox_content">
+				<h6>
+					<img style="" src="./timg1.png">
+					<label style="" class="header-company">学习助手</label>
+					<a title="最小化" class="pc-hide" style=""></a>
+				</h6>
+				<div class="talk">
+					<div class="mes_box">
+						<div class="service"></div>
+					</div>
+					<div class="inputBox">
+						<div class="inputArea">
+                            <!-- <textarea class="color-grey-deep"></textarea> -->
+                            <!-- <textarea id="myEditor" placeholder="请输入" name="content" id="" cols="30" rows="10"></textarea> -->
+                            <span class="please_input">请输入文字</span>
+                            <div class="edui-container" style="width: 100%; z-index: 10;">
+                            	<textarea class="edit_area"></textarea>
+                            </div>
+                            <a class="submit-btn-wrap font14" id="sendBtn" style="background-color:rgb(30, 137, 230)">发送<i class="submit-btn btnHover btnActive"></i></a><!-- 发送 -->
+                            <!-- <span><a class="toDeveloper" href="http://www.53kf.com" target="_blank">by 53KF</a> -->
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

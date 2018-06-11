@@ -1,0 +1,6 @@
+var connection = mysql.createConnection({
+    host: '10.128.18.173',
+    user: 'chatbox',
+    password: 'chatbox173',
+    database:'mooc_qa'
+});

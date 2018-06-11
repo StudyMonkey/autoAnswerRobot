@@ -1,0 +1,101 @@
+#iframeParent h6{
+    width: 100%;
+    box-sizing: border-box;
+    background: rgb(31, 140, 235) no-repeat 10px;
+    margin: 0;
+    padding: 0;
+    padding-left: 42px;
+    font-size: 14px;
+    color: #fff;
+    height: 36px;
+    line-height: 36px;
+    position: relative;
+    font-weight: normal;
+    padding-right: 72px;
+}
+#iframeParent h6 img{
+	position:absolute;
+	left:10px;
+	top:6px;
+	width:24px;
+	height:24px;	
+	border-radius:2px;
+}
+#iframeParent h6 label{
+	font-weight:normal;
+	cursor:move;
+	display: inline-block;
+	width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#iframeParent h6 a{
+	background: url(to-min.png) center no-repeat;
+/*	background-image: url(http://www2.53kf.com/style/chat/new2017/image/svg/to-minWindow.svg),none;*/
+	position: absolute;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+	right: 0px;
+	top: 0;
+}
+.chatBox_mini{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	white-space: nowrap;
+	width: 360px;
+	height: 42px;
+	border-radius: 2px;
+	overflow: hidden;
+	background: rgb(31,140,235);
+	cursor: pointer;
+    display: none; 	
+}
+.mini_btn_info{
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: inline-block;
+}
+.mini_btn_info span.img_span{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: center center no-repeat;
+    background-image: url(img-info.png);
+}
+.mini_btn_info span.bg_span{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #000;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+.mini-btn-middle{
+	font-weight:normal;
+	display:inline-block;
+	vertical-align:top;
+	line-height: 42px;
+	padding: 0 8px;
+	font-size: 16px;
+	color: #FFFFFF;
+	letter-spacing: 0.83px;
+	word-break: break-all;
+	text-align: center;
+}
+.mini-btn-window{
+	display:inline-block;
+	width: 42px;height: 42px;
+	float: right;
+	background: center center no-repeat;
+	background-image: url(to-top.png);
+/*	background-image: url(http://www2.53kf.com/style/chat/new2017/image/svg/to-maxWindow.svg), none;*/
+}	

@@ -1,0 +1,314 @@
+* {
+    margin: 0;
+    padding: 0;
+    tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+ul,li{
+	list-style: none;
+}
+.chatBox{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 360px;
+	height: 460px;
+	line-height: 0;
+	font-size: 0;
+	z-index: 99999;	
+}
+
+.chatBox_mini{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	white-space: nowrap;
+	width: 100%;
+	height: 42px;
+	border-radius: 2px;
+	overflow: hidden;
+	background: rgb(31,140,235);
+	cursor: pointer;	
+}
+.mini_btn_info{
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: inline-block;
+}
+.mini_btn_info span.img_span{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: center center no-repeat;
+    background-image: url(img-info.png);
+}
+.mini_btn_info span.bg_span{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #000;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+.mini-btn-middle{
+	font-weight:normal;
+	display:inline-block;
+	vertical-align:top;
+	line-height: 42px;
+	padding: 0 8px;
+	font-size: 16px;
+	color: #FFFFFF;
+	letter-spacing: 0.83px;
+	word-break: break-all;
+	text-align: center;
+}
+.mini-btn-window{
+	display:inline-block;
+	width: 42px;height: 42px;
+	float: right;
+	background: center center no-repeat;
+	background-image: url(to-top.png);
+	position:fixed;
+	z-index:2;
+	right:0
+/*	background-image: url(http://www2.53kf.com/style/chat/new2017/image/svg/to-maxWindow.svg), none;*/
+}
+.chatBox_content{
+    font-size: 0;
+    background-color: #fff;
+    border-radius: 2px;
+    overflow: hidden;
+    width: 100%;
+    height: 460px;
+    box-shadow: 0 5px 40px rgba(0,0,0,.16)!important;
+    -webkit-box-shadow: 0 5px 40px rgba(0,0,0,.16)!important;
+	display:none;
+}
+.chatBox_content h6{
+    width: 100%;
+    box-sizing: border-box;
+    background: rgb(31, 140, 235) no-repeat 10px;
+    margin: 0;
+    padding: 0;
+    padding-left: 42px;
+    font-size: 14px;
+    color: #fff;
+    height: 36px;
+    line-height: 36px;
+    position: relative;
+    font-weight: normal;
+    padding-right: 72px;
+}
+.chatBox_content h6 img{
+	position:absolute;
+	left:10px;
+	top:6px;
+	width:24px;
+	height:24px;	
+	border-radius:2px;
+}
+.chatBox_content h6 label{
+	font-weight:normal;
+	cursor:move;
+	display: inline-block;
+	width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.chatBox_content h6 a{
+	background: url(to-min.png) center no-repeat;
+/*	background-image: url(http://www2.53kf.com/style/chat/new2017/image/svg/to-minWindow.svg),none;*/
+	position: absolute;
+	width: 36px;
+	height: 36px;
+	cursor: pointer;
+	right: 0px;
+	top: 0;
+}
+
+.talk{
+	width: 360px;
+	height: 424px;
+	background: #FFFFFF;
+	overflow: hidden;
+	box-sizing: content-box;
+}
+.mes_box{
+    overflow: auto;
+    box-sizing: border-box;
+    position: relative;
+    padding: 0;
+    height: 100%;
+    padding-bottom: 95px;
+}
+.service{
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    padding-top: 10px;   
+}
+.pc-talk{
+    /*padding-top: 12px;*/
+    position: relative;
+    padding: 0 10px 10px;
+    max-width: 100%;
+}
+.pc-service {
+    white-space: nowrap;
+    margin-bottom: 15px;
+    position: relative;
+    max-width: 100%;
+}
+.pc-service-left {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    text-align: center;
+    width: 38px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.pc-service-left-my{
+	left: 295px;
+}
+.pc-service-left img {
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+}
+.pc-service-right {
+    padding-left: 38px;
+    padding-right: 38px;
+    max-width: 100%;
+}
+.pc-service-right-my{
+	padding-right: 48px;
+	padding-left: 8px;
+	overflow: hidden;
+}
+.pc-service-right-my p{
+	text-align: right;
+}
+.pc-service-right-my .pc-service-info{
+	float: right;
+}
+.pc-service-right p {
+    font-size: 12px;
+    color: #62778C;
+    margin-bottom: 5px;
+}
+.pc-service-right p label {
+    margin-right: 10px;
+}
+.pc-service-info {
+    display: inline-block;
+    max-width: 100%;
+    padding: 10px 8px;
+    background-color: #eff3f6;
+    color: #28334B;
+    border-radius: 4px;
+    white-space: normal;
+    font-size: 13px;
+    word-break: break-word;
+    word-wrap: break-word;
+}
+div.inputBox{
+    height: 95px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #DDE5ED;
+    background: #fff;	
+}
+span.please_input{
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    z-index: 11;
+    padding-left: 10px;
+    height: 20px;
+    line-height: 20px;
+    color: #8DA2B5;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.submit-btn-wrap {
+    overflow: hidden;
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    width: 60px;
+    height: 28px;
+    background-color: #1e89e6;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    line-height: 28px;
+    vertical-align: middle;
+    font-size: 14px;
+    letter-spacing: 1px;    
+}
+.submit-btn-wrap .submit-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.edui-container .edit_area{
+    width: 345px;
+    height: 50px;
+    border: none;
+    padding: 6px 5px 0 10px;
+    letter-spacing: 1px;
+    resize: none;
+    color: #8DA2B5;
+    font-size: 13px;
+    outline: none;
+    font-weight: bold;
+}
+
+#listUser{
+    display: block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #c2cf8a;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 25px;
+}
+#users{
+    width: 550px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #CCCCCC;
+}
+#users li{
+    width: 550px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    float: left;
+    border-right: 1px solid #CCCCCC;	
+}
+#users li:nth-child(8n){
+	border-right: none;
+}

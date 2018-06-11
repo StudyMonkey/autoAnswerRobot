@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="chat.css"/>
+		<script type="text/javascript" src="jquery-1.11.2.min.js" ></script>
+		<script type="text/javascript" src="socket.io.js" ></script>
+		<script type="text/javascript" src="admin_chat.js" ></script>
+	</head>
+	<body>
+		<span id="listUser">查询在线用户</span>
+		<p>当前用户在线列表</p>
+		<ul id="users"></ul>
+		<div class="chatBox">
+			<div class="chatBox_mini">
+				<div class="mini_btn_info">
+					<span class="img_span"></span>
+					<span class="bg_span"></span>
+				</div>
+				<div class="mini-btn-middle">您的学习小助手!</div>
+				<div class="mini-btn-window" style=""></div>
+			</div>
+			<div class="chatBox_content">
+				<h6>
+					<img style="" src="http://www2.53kf.com/style/chat/new2017/image/png/logo.png">
+					<label style="" class="header-company">学习助手</label>
+					<a title="最小化" class="pc-hide" style=""></a>
+				</h6>
+				<div class="talk">
+					<div class="mes_box">
+						<div class="service"></div>
+					</div>
+					<div class="inputBox">
+						<div class="inputArea">
+                            <!-- <textarea class="color-grey-deep"></textarea> -->
+                            <!-- <textarea id="myEditor" placeholder="请输入" name="content" id="" cols="30" rows="10"></textarea> -->
+                            <span class="please_input">请输入文字或粘贴QQ截图</span>
+                            <div class="edui-container" style="width: 100%; z-index: 10;">
+                            	<textarea class="edit_area"></textarea>
+                            </div>
+                            <a class="submit-btn-wrap font14" id="sendBtn" style="background-color:rgb(30, 137, 230)">发送<i class="submit-btn btnHover btnActive"></i></a><!-- 发送 -->
+                            <!-- <span><a class="toDeveloper" href="http://www.53kf.com" target="_blank">by 53KF</a> -->
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,201 @@
+var express = require('express'), //引入express模块
+    app = express(),
+	server = require('http').createServer(app); 
+    IO = require('socket.io'); //引入socket.io模块并绑定到服务器    
+var URL = require('url');    
+app.use('/', express.static(__dirname + '/www')); //指定静态HTML文件的位置
+server.listen(8081)
+
+
+
+
+console.log('server started');
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: '10.128.18.173',
+    user: 'chatbox',
+    password: 'chatbox173',
+    database:'mooc_qa'
+});
+connection.connect();
+
+// 创建socket服务
+var socketIO = IO(server);
+var obj = {};
+var channelid = '';
+
+
+app.get('/recommand', function (req, res) {
+	console.log(req.query.eid);
+    console.log(req.query.msg);
+  	//res.send('Hello World!');
+  	var eID = req.query.eid;
+  	var data = req.query.msg;
+	console.log('server send to :'+ eID +". MSG IS " +data);
+	var socketId = obj[eID];
+	socketId.emit('SERVER_MSG', data); 
+	res.send('true');
+});
+app.get('/onlineusers', function (req, res) {
+	var key_lst = [];
+	for(var key in obj){
+		key_lst.push(key);
+	}
+	res.send("{\"LIST\":\""+key_lst.join(",")+"\"}");
+});
+
+
+
+//socket部分
+socketIO.on('connection', function(socket) {
+    var url = socket.request.headers.referer;
+    console.log(new Date());
+    console.log(url);
+    console.log('这是query='+URL.parse(url).query);
+    
+    var myeid = "";
+    var imgUrl = "";
+    if(URL.parse(url).query != null){
+	    var urlArray = URL.parse(url).query.split('&');	    
+	    console.log('urlArray='+urlArray);
+	    for(var i = 0; i < urlArray.length;i++){
+	    	if(urlArray[i].indexOf('cid') >= 0){
+	    		console.log('urlArray[i]='+ urlArray[i]);
+	    		channelid = urlArray[i].split('=')[urlArray[i].split('=').length-1];
+	    	}else if(urlArray[i].indexOf('imgUrl') >= 0){
+	    		imgUrl = urlArray[i].split('=')[urlArray[i].split('=').length-1];
+	    		console.log('imgUrl='+imgUrl);
+	    		socket.emit('USER_IMG', imgUrl);
+	    	}
+	    }   	
+    }else{
+    	channelid = '0';
+    }
+	if(channelid == '' || channelid == undefined)
+		channelid = '0';
+    console.log('channelid'+channelid);
+    //obj[eID] = socket;
+    //socket.emit('join',function)
+    //接收并处理客户端发送的CLIENT_MSG事件
+    socket.on('CLIENT_MSG', function(data) {
+    var splited = data.split(':');
+    var cmd = splited[0];   // 获取用户ID
+    var cmd_option = splited[1];   // 获取用户ID	      
+    	if(cmd == 'eid'){
+    		
+    		//建立EID与socket的映射关系
+    		obj[cmd_option] = socket;
+    		
+    		//记录当前用户的EID
+    		myeid = cmd_option;
+    		
+    		console.log('User login : ', cmd_option);
+    		//查询
+    		if(channelid!=null && channelid != ''&& channelid != 'undefined'){
+    			var sql = "SELECT qa_welcome.TITLE, qa_welcome.CONTENT FROM qa_welcome WHERE channelid = '"+channelid+"'";
+				connection.query(sql, function(err, rows, fields) {
+				    console.log('The solution is: ', rows);
+				    if (err) throw err;
+				    if(rows.length != 0){
+					    var title = rows[0].TITLE;
+					    var content = rows[0].CONTENT;
+					    socket.emit('SERVER_MSG', title+ '<br/>' +content);
+				    }else{
+				    	//如果课程内容不存在，则直接返回平台级type=0并且channelid=0内容
+				    	var sql = "SELECT qa_welcome.TITLE, qa_welcome.CONTENT FROM qa_welcome WHERE type = 0 AND channelid = '0'";
+						connection.query(sql, function(err, rows, fields) {
+						    console.log('The solution is: ', rows);
+						    if (err) throw err;
+						    if(rows.length != 0){
+							    var title = rows[0].TITLE;
+							    var content = rows[0].CONTENT;
+							    socket.emit('SERVER_MSG', title+ '<br/>' +content);
+							}
+						    else{						    
+				    			socket.emit('SERVER_MSG', '课程不存在！');
+				    		}
+				  		});
+				  	}
+				});    			
+    		}
+
+    	}else if(cmd == 'msg'){
+	        //将消息输出到控制台	
+	        var sql = "SELECT ANSWER FROM qa_questions " +
+                       " WHERE CHANNELID = '"+channelid+"' AND TITLE = '"+cmd_option.trim()+"'";	
+              console.log(sql);             
+			connection.query(sql, function(err, rows, fields) {
+			    console.log('The solution is: ', rows);
+			    if (err) throw err;
+			    if(rows.length != 0){
+				    var answer = rows[0].ANSWER;
+				    
+				    //将这个问题的提问次数加1
+				    var sql = "UPDATE qa_questions SET hits=hits+1 WHERE channelid='"+channelid+"' AND title='"+cmd_option.trim()+"'";
+				    connection.query(sql,function(err, result) {
+					    if (err) throw err;					
+					    //console.log('updated '+channelid+','+cmd_option.trim());
+					});				   				    
+				    socket.emit('SERVER_MSG', answer);
+			    }else{
+			    	//如果输入了一个不存在的命令，则查数据库调出这个课的欢迎页面
+			    	var sql = ''
+			    	if(channelid == '0')
+			    		sql = "SELECT qa_welcome.TITLE, qa_welcome.CONTENT FROM qa_welcome WHERE type = 0 AND channelid = '"+channelid+"'";
+			    	else
+			    		sql = "SELECT qa_welcome.TITLE, qa_welcome.CONTENT FROM qa_welcome WHERE type = 1 AND channelid = '"+channelid+"'";
+					connection.query(sql, function(err, rows, fields) {
+					    console.log('The solution is: ', sql);
+					    if (err) throw err;
+					    if(rows.length != 0){
+						    var title = rows[0].TITLE;
+						    var content = rows[0].CONTENT;
+						    socket.emit('SERVER_MSG', title+content);
+						}
+					    else{						    
+			    			socket.emit('SERVER_MSG', '课程不存在！');
+			    		}
+			  		});			    	
+			    	//socket.emit('SERVER_MSG', '命令不识别！');
+			    }
+			});
+      	 }
+    }); 
+    //管理员发送消息逻辑
+    socket.on('ADMIN_MSG', function(data) {
+    	if(data.indexOf(':') == -1){
+    		socket.emit('SERVER_MSG', '管理员消息必须指定用户！<br>格式是：<用户名>:<消息内容>');
+    	}else{
+		    var splited = data.trim().split(':');	    
+		    var eID = splited[0];   // 获取用户ID
+		    if(eID == "SYSCOMMAND"){
+		    	var cmd = splited[1];
+		    	switch(cmd){
+		    		case "list":
+		    			var key_lst = [];
+		    			for(var key in obj){
+		    				key_lst.push(key);
+		    			}
+		    			socket.emit('SERVER_RESPONSE_ADMIN_MSG', "LIST:"+key_lst.join(","));
+		    			break;
+		    	}
+		    }else if(eID == "ALL"){
+		    	console.log('进入all消息');
+		    	socketIO.emit('SERVER_ALLSEND_MSG',splited[1]);
+		    }else{		    	
+		    	if(obj.hasOwnProperty(eID)){
+			    	console.log('server send to :'+ eID +". MSG IS " +data);
+			    	var socketId = obj[eID];
+			    	socketId.emit('SERVER_MSG', splited[1]);
+		    	}else{
+		    		socket.emit('SERVER_MSG', '用户名'+eID+'不存在！');
+		    	}
+	    	}	
+	    }
+    });
+    socket.on('disconnect', function (data) {
+		delete(obj[myeid]);
+		console.log('User exit : ', myeid);
+	})
+});
+
