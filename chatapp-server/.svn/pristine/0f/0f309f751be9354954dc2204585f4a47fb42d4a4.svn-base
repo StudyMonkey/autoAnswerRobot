@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>{{roomID}}</title>
+  <style>
+  html,body{
+    font-family: 'Microsoft Yahei';
+  }
+  ul,li,div,p,xmp{
+    margin:0
+  }
+  ul{
+    padding: 0;
+  }
+  ul,li{
+    list-style-type: none;
+  }
+@font-face {font-family: "iconfont";
+  src: url('../ux_1472089696_5406146/iconfont.eot?t=1468476644'); /* IE9*/
+  src: url('../ux_1472089696_5406146/iconfont.eot?t=1468476644#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../ux_1472089696_5406146/iconfont.woff?t=1468476644') format('woff'), /* chrome, firefox */
+  url('../ux_1472089696_5406146/iconfont.ttf?t=1468476644') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../ux_1472089696_5406146/iconfont.svg?t=1468476644#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+}
+                    
+
+    #msglog, #messageInput {
+      border: 1px solid #ccc;
+      width: 100%;
+      height: 345px;
+      overflow-y: auto;
+      font-size: 14px;
+      box-sizing: border-box;
+      word-break: break-all;
+    }
+    #messageInput {
+      height: 83px;
+    }
+    .message {
+      line-height: 22px;
+    }
+    .message .user {
+      padding-left: 5px;
+      color: brown;
+    }
+    .sysMsg {
+      color: #c1bfbf;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size: 12px;
+    }
+    #users {
+      width: 90%;
+      padding: 0 5px 5px;
+    }
+    .items {
+        height: 20px;
+        padding: 5px 0;
+    }
+    #colorStyle {
+        width: 50px;
+        border: none;
+        padding: 0;
+    }
+    /*custom the file input*/
+
+    .imageLable {
+        position: relative;
+    }
+    #sendImage {
+        position: absolute;
+        width: 30px;
+        left: 0;
+        opacity: 0;
+        overflow: hidden;
+    }
+
+    #emoji,#clearBtn{
+      padding: 0 5px;
+      font-size: 20px;
+      cursor: default;
+    }
+    #emoji:hover,#clearBtn:hover,.lm_sendImage:hover{
+      border:1px solid #ccc;
+      padding: 0 4px;
+    }
+    #emojiWrapper {
+        display: none;
+        width: 100%;
+        height: 200px;
+        overflow-y: scroll; 
+        overflow-x: hidden; 
+        bottom: 105px;
+        position: absolute;
+        background-color: #aaa;
+        box-shadow: 0 0 10px #555;
+    }
+    #emojiWrapper img {
+        margin: 2px;
+        padding: 2px;
+        width: 25px;
+        height: 25px;
+    }
+    #emojiWrapper img:hover {
+        background-color: blue;
+    }
+    .emoji{
+        display: inline;
+    }
+    #closeRoom{
+      display: block;
+      float: right;
+    }
+    #chatBox{
+      width: 68%;
+      display: none;
+      float: right;
+      background-color: rgb(209,229,246);
+      position: relative;
+    } 
+
+    #closeRoom img{
+      cursor: pointer;
+    } 
+    .lm_sendImage{
+      border:none;
+      background-image: url('../content/pic.png'); 
+      background-size: 20px;
+      width: 20px;
+      background-color: transparent;
+    }
+
+    .lm_userList{
+      position: absolute;
+      top: 0;
+      left: -188px;
+      width: 186px;
+      height: 530px;
+      /*overflow: scroll;*/
+      border: 1px solid rgb(63,183,240);
+    }
+
+    .lm_userList1{
+      height: 492px;
+    }
+
+    .lm_userList p{
+      width: 100%;
+      height: 36px;
+      line-height: 36px;
+      color: #fff;
+      text-align: center;
+      background-color: rgb(63,183,240);
+    }
+
+    .lm_userList li{
+      padding: 5px 0 0 5px;
+      overflow: hidden;
+      white-space:nowrap; 
+      text-overflow: ellipsis;
+    }
+
+    .send,.send1 {
+      position:relative;
+      word-wrap: break-word;
+      max-width:300px;
+      min-width: 20px;
+      padding: 3px;
+      min-height: 22px;
+      border-radius:5px; /* 圆角 */
+    }
+
+    .send .arrow,.send1 .arrow1 {
+      position:absolute;
+      top:5px;
+      right:-16px; /* 圆角的位置需要细心调试哦 */
+      width:0;
+      height:0;
+      font-size:0;
+      border:solid 8px;
+      
+    }
+
+    .send{
+       background:rgb(160,231,90);
+    }
+    .send1 {
+        background:#d3d3d3;
+        margin-left: 16px;
+    }
+
+    .send .arrow{
+      border-color:rgb(209,229,246) rgb(209,229,246) rgb(209,229,246) rgb(160,231,90);
+    }
+
+    .send1 .arrow1 {
+      left: -16px;
+        border-color:rgb(209,229,246) #d3d3d3 rgb(209,229,246) rgb(209,229,246);
+    }
+
+    .chatHeader{
+      color: #337240;
+    }
+
+    textarea{outline:none;resize:none;}
+
+    xmp{
+      white-space: inherit;
+    }
+
+    span.msg img{
+      max-width: 200px;
+      max-height: 100px;
+    }
+
+    .timeBox{
+      width: 125px;
+      margin: 8px auto;
+      font-size: 12px;
+    }
+
+
+    /*end custom file input*/
+  </style>
+</head>
+<body>
+<div id="chatBox">
+  <div class="chatHeader">
+    姓名: <span id="userName"></span>  <br/>
+    <button id="scroll">查看历史消息</button>
+    <span style="display: none" id="eid"></span>
+    <!-- <a id="closeRoom" href="#"><img src="/content/shouqi_liao.png" alt=""></a> -->
+    <span style="display: none" id="lm_cid">房间: {{roomID}}</span>
+    <!--当前在线人数: <span id="count">{{users.length}}</span> <br/>-->
+    <span style="display: none">在线用户:  <div id="users">{{users}}</div></span>
+  </div>
+    <div id="msglog">
+      
+    </div>
+    <div class="items">
+  <!--     <input id="colorStyle" type="color" placeHolder='#000' title="font color" />
+   <input id="emoji" type="button" value="emoji" title="emoji" />-->
+      <span id="emoji" class="icon iconfont" title="表情">&#xe604;</span>
+      <label for="sendImage" class="imageLable">
+          <input class="lm_sendImage" type="button" title="发送图片" />
+          <input id="sendImage" type="file" title="发送图片" />
+      </label>
+      <!-- <input id="clearBtn" type="button" value="clear" title="clear screen" /> -->
+      <span id="clearBtn" class="icon iconfont" title="清空聊天记录">&#xe602;</span>
+  </div>
+  <div id="emojiWrapper"></div>
+    <textarea name="message" id="messageInput"></textarea>
+    <br/>
+    按Ctrl+Enter键发送
+    <!-- <button id="joinOrLeave">退出房间</button> -->
+    <div class="lm_userList">
+      <p>在线用户列表(<span id="count">{{users.length}}</span>)</p>
+      <ul class="lm_userList1"></ul>
+    </div>
+
+</div>
+
+  <script src="../js/socket.io.js"></script>
+  <script src="../js/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/hichat.js"></script>
+  <!-- <script type="text/javascript" src="/js/base64.js"></script> -->
+
+  <script>
+  //取cookies 
+function getCookie(objName){//获取指定名称的cookie的值 
+	var arrStr = document.cookie.split("; "); 
+	for(var i = 0;i < arrStr.length;i ++){ 
+		var temp = arrStr[i].split("="); 
+		if(temp[0] == objName) return unescape(temp[1]);					
+	} 
+} 
+
+// 设置 cookie
+function setCookie(name,value,expiredays){
+  if(expiredays!=null){
+    var exp = new Date();
+    //exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    exp.setTime(exp.getTime() + 5*60*1000);
+  } 
+  document.cookie = name + "="+ escape (value) +((expiredays==null) ? "" : ";expires="+exp.toGMTString())+";path=/";
+};
+
+//表情显示处理函数
+function _showEmoji(msg) {
+      var match, result = msg,
+          reg = /\[emoji:\d+\]/g,
+          emojiIndex,
+          totalEmojiNum = document.getElementById('emojiWrapper').children.length;
+      while (match = reg.exec(msg)) {
+          emojiIndex = match[0].slice(7, -1);
+          result = emojiIndex > totalEmojiNum ? result.replace(match[0], '[X]') : result.replace(match[0], "<img class='emoji' src='../content/emoji/" + emojiIndex + ".gif' />");
+      };
+      return result;
+};
+
+//图片显示处理函数
+function _displayImage( imgData) {
+  // return result =  "<img src='" + imgData + "'/>";
+  return result =  "<a href='" + imgData + "' target='_blank'><img src='" + imgData + "'/></a>";
+};
+
+
+
+
+$(function(){
+    //var socket = io();
+	var server_host_url = 'http://www.mooc.mtn';	
+    const socket = io(server_host_url, {path:'/chatroomapp'});
+    //socket.emit('leave');
+    var lm_b = 0;
+    var roomid = '{{roomID}}';
+    var ArrayRoomID = roomid.split('_'); //后面要用到的cid
+    var _users = '{{users}}';
+    var url = 'http://www.mooc.mtn/mooc';  //截取的url方便后面拼接
+    var keynum = ''; 
+    var userName = getCookie('userName');  // 从cookie里面获取用户名，全局变量
+    var eid = getCookie('loginEid');       // 从cookie里面获取eid，全局变量
+    
+    //var ArrayUser = _users.split(',');
+
+    // 通过判断cookie来判断聊天室的显示情况
+    getCookie('lmchat_roomstatus_' + ArrayRoomID[1])=='block' ? ($('#chatBox').css('display', 'block'),receiveMessage(1)) : ($('#chatBox').css('display', 'none'),receiveMessage(2));
+
+    //清空聊天记录并加入新的时间点
+    $('#clearBtn').click(function(){
+      confirm('是否确定删除聊天记录?') ? ($('#msglog').html(''),$.getJSON(url+"/channelChatRoomServlet", { method: "join_node", cid: ArrayRoomID[1], eid: getCookie('loginEid'), userName: userName }, function(json){})) : null
+    });
+
+
+    //相同的取数据处理函数
+    function msgHandle(jsonData,i,tianJia){
+        if(jsonData[i].eid == eid){
+            //判断消息里面是否含有a标签进行处理
+            jsonData[i].msg_content = (jsonData[i].msg_content.indexOf('<a') > -1 && jsonData[i].msg_content.indexOf('data:image/') == -1) ? ('<xmp>' + jsonData[i].msg_content + '</xmp>') : jsonData[i].msg_content;
+            var  message = '' +
+              '<div class="message" style="overflow:hidden;margin:5px 0" >' +
+              '  <span class="user" style="float:right"  title="'+jsonData[i].eid+'">我</span>' +
+              '<div class="send"style="float:right;margin-right:12px">' +
+              
+              '  <span class="msg" title="' + jsonData[i].writetime + '">' + jsonData[i].msg_content + '</span><br />' +
+              // '<span class="timespan">() </span>' +
+              '<div class="arrow"></div>' +
+              '</div>' +
+              '</div>';
+              tianJia == 1 ? $('#msglog').prepend(message) : $('#msglog').append(message);
+               //$('#msglog').prepend(message);
+          }else{
+            jsonData[i].msg_content = (jsonData[i].msg_content.indexOf('<a') > -1 && jsonData[i].msg_content.indexOf('data:image/') == -1) ? ('<xmp>' + jsonData[i].msg_content + '</xmp>') : jsonData[i].msg_content;
+            var message = '' +
+              '<div class="message" style="overflow:hidden;margin:5px 0">' +
+              '  <span class="user" style="float:left" title="'+jsonData[i].eid+'">' + jsonData[i].username + ' </span>' +
+              '<div class="send1" style="float:left">' +
+              // '<span class="timespan">() </span><br />' +
+              '  <span class="msg" title="' + jsonData[i].writetime + '">' + jsonData[i].msg_content + '</span>' +
+              '<div class="arrow1"></div>' +
+              '</div>' +
+              '</div>';
+              tianJia == 1 ? $('#msglog').prepend(message) : $('#msglog').append(message);
+      }
+
+    }
+
+/*      //消息框滚动条滚动到最上面回显数据
+      $('#msglog').scroll(function(event) {
+          //alert(111);
+          $('#msglog').scrollTop()<=0 ? alert('已经到达顶部') : null;
+      });
+       */    
+
+      //鼠标滚轮事件
+/*      if(document.addEventListener){
+          var msglog = document.getElementById('msglog');
+          var userName = getCookie('userName');
+          var eid = getCookie('loginEid');
+          console.log(ArrayRoomID[1]);
+          msglog.addEventListener('mousewheel',function(e){
+              console.log(eid);
+              console.log(userName);
+            // alert(e.wheelDelta);
+            if(e.wheelDelta == 120){
+                $.ajax({
+                    url : url+'/channelChatRoomServlet',
+                    dataType : 'jsonp',
+                    data: "method=scrollbackmessage_node&cid="+ArrayRoomID[1]+"&eid="+eid+"&userName="+userName,
+                    type : 'POST',
+                    //jsonp: 'callback',
+                    jsonpCallback : 'callback',
+                    success : function(data){
+                      console.log(data);
+
+                    },
+                    error : function(){
+                      alert('ajax请求出错');
+                    }
+              });
+
+            }   //? alert('已经到顶部了') : null;
+
+
+            //alert(111);
+          },false);
+      }*/
+
+      $('#scroll').click(function(){      
+          $.ajax({
+              url : url+'/channelChatRoomServlet',
+              dataType : 'jsonp',
+              data: "method=scrollbackmessage_node&cid="+ArrayRoomID[1]+"&eid="+eid+"&userName="+userName,
+              type : 'POST',
+              //jsonp: 'callback',
+              jsonpCallback : 'callback',
+              success : function(data){
+               // alert(data);
+                var jsonData = eval(data);
+                //var  message_all = '';
+                for(var i = jsonData.length-1; i >=0 ; i--){
+                    msgHandle(jsonData,i,1);
+                };
+                if(jsonData.length>0)
+                  $('#msglog').prepend('<div class="timeBox">'+ jsonData[0].writetime +'</div>')
+
+              },
+              error : function(){
+                alert('ajax请求出错');
+              }
+          });
+      })
+
+
+    function chatRoom(userName, eid){  
+
+      // ---------创建连接-----------
+      //var socket = io();
+	  var socket = io(server_host_url, {path:'/chatroomapp'});
+      // 加入房间
+      socket.on('connect', function () {
+        socket.emit('join', userName, eid);
+/*        flag ? socket.emit('join', userName, eid) : ($('#chatBox').css('display', 'none'),alert('您已加入此房间！')); */      
+              
+      });
+
+
+      // 监听消息
+      socket.on('msg', function (userName, msg) {
+        var date = new Date().toTimeString().substr(0, 5);
+        var message = '';
+        var userName_i = userName.split('#');
+        var userName = userName_i[0];   //这和上面的定义不一样，这是传过来的值
+        var eid = userName_i[1];
+        //当用户输入a标签时，把整个当成字符串解析
+        // alert(msg.indexOf('data:iamge/')==-1);
+        msg = (msg.indexOf('<a') > -1 && msg.indexOf('data:image/') == -1) ? ('<xmp>'+ msg +'</xmp>') : msg ;
+        if(eid == $('#eid').text()){
+            message = '' +
+              '<div class="message" style="overflow:hidden;margin:5px 0" >' +
+              '  <span class="user" style="float:right" title="'+eid+'">我</span>' +
+              '<div class="send"style="float:right;margin-right:12px">' +
+              '  <span class="msg" title="'+ date +'">' + msg + '</span>' +
+              '<div class="arrow"></div>' +
+              '</div>' +
+              '</div>';
+        }else{
+            message = '' +
+              '<div class="message" style="overflow:hidden;margin:5px 0">' +
+              '  <span class="user" style="float:left" title="'+eid+'">' + userName + ' </span>' +
+              '<div class="send1" style="float:left">' +
+              '  <span class="msg" title="'+ date +'">' + msg + '</span>' +
+              '<div class="arrow1"></div>' +
+              '</div>' +
+              '</div>';
+        };
+        
+        $('#msglog').append(message);
+        // 滚动条保持最下方
+        $('#msglog').scrollTop($('#msglog')[0].scrollHeight);  
+      });
+
+      // 监听系统消息
+      socket.on('sys', function (sysMsg, users) {
+
+        var message = '<div class="sysMsg">' + sysMsg + '</div>';     
+
+       // alert(users);
+        $('#count').text(users.length);
+        $('#users').text(users);
+        $('.lm_userList1').html(''); //链接和断开链接都会调用这个函数，这里必须要先清空一下
+        for(var i=0; i<users.length;i++){
+          var users_i = users[i].split('#');
+          $('.lm_userList1').append('<li title="'+users_i[1]+'">'+users_i[0]+'</li>');
+        }
+
+
+           // 获取li的高度与数量相乘的高度与ul的高度进行比较，大的话就改变样式可以滚动
+          var liHeight = $('.lm_userList1 li').height();
+
+          var liAll_Height = liHeight * users.length; 
+          liAll_Height>$('.lm_userList1').height() ? $('.lm_userList1').css('overflow-y', 'scroll') : null;           
+      });
+
+
+    // 发送消息
+    $('#messageInput').keyup(function (event) {
+      keynum = window.event ?  event.keyCode : event.which;
+      event = event || window.event;
+      if (event.ctrlKey && keynum === 13 || keynum ===10) {
+        event.preventDefault();
+        var msg = $(this).val();
+        //处理多个换行
+        msg = msg.replace(/\n/g,'<br/>');
+        //处理双引号转换成单引号避免json数据报错
+        msg = msg.replace(/"/g,"'");
+        if(msg.length !== 0){
+            $(this).val('');
+            var newMsg = '';
+            if (msg.trim().length != 0) {
+              newMsg = _showEmoji(msg);
+            }
+            socket.send(newMsg);
+        }
+      }
+    });
+
+    //图片按钮点击事件
+    $('#sendImage').change(function(event) {
+        if (this.files.length != 0) {
+            var file = this.files[0],
+                reader = new FileReader();
+            if(!/image\/\w+/.test(file.type)){ 
+                alert("文件必须为图片！"); 
+                return false; 
+            } 
+            if (!reader) {
+                that._displayNewMsg('system', '!your browser doesn\'t support fileReader', 'red');
+                this.value = '';
+                return;
+            };
+            reader.onload = function(e) {
+              //alert(111);
+                this.value = '';
+                var newMsg1 = _displayImage(e.target.result);
+                socket.send(newMsg1);
+            };
+            reader.readAsDataURL(file);
+        };
+    });
+
+  };
+    //定义的判断重复加入聊天室判断和根据是否有cookie值进行判断  
+    function receiveMessage(flag){
+          lm_b++;
+          //alert('lm_b:'+lm_b);
+          //父页面发过来的值与获取到的cookie进行对比，并且控制加入房间的函数只调用一次
+          if(lm_b<=1){
+            document.getElementById('chatBox').style.display= 'block';
+            $('#userName').text(userName); 
+            $('#eid').text(eid); 
+            chatRoom(userName, eid);
+            if(flag == 1){
+                  $.ajax({
+                    url : url+'/channelChatRoomServlet',
+                    dataType : 'jsonp',
+                    data: "method=getmessage_node&cid="+ArrayRoomID[1]+"&eid="+eid+"&userName="+userName,
+                    type : 'POST',
+                    //jsonp: 'callback',
+                    jsonpCallback : 'callback',
+                    success : function(data){
+                      console.log(data);
+                        var jsonData = eval(data);
+                        for(var i = 0; i < jsonData.length; i++){
+                            msgHandle(jsonData,i,2);
+                        };
+                        $('#msglog').scrollTop($('#msglog')[0].scrollHeight);
+                    },
+                    error : function(){
+                      alert('链接失败！');
+                    }
+                  });
+              }else{
+                //页面刚点击进入聊天室时种cookie
+                setCookie('lmchat_roomstatus_' + ArrayRoomID[1],'block');
+                $.getJSON(url+"/channelChatRoomServlet", { method: "join_node", cid: ArrayRoomID[1], eid: eid, userName: userName }, function(json){});
+              }
+          }else{
+            document.getElementById('chatBox').style.display= 'block';
+          } 
+    };
+
+
+
+});
+
+  
+  </script>
+
+</body>
+</html>
